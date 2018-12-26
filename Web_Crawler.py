@@ -57,7 +57,7 @@ def crawl_web(seed):
     index = []
     
     crawled = []
-    for e in range(20):
+    for e in range(20): 
         page = tocrawl.pop()
         if not page in crawled :
             content = get_page(page)
