@@ -1,5 +1,6 @@
-index=[]
-def get_page(url):
+index=[] # We create an nested list where the associated url's are stored against each keyword
+
+def get_page(url): # Here we acquire the source code of the page. This is an in built function. 
     try:
         import urllib
         return urllib.urlopen(url).read()
@@ -13,21 +14,22 @@ def add_to_index(index, keyword, url):
     return index.append([keyword, [url]])
     
 
-def lookup(index, keyword):
+def lookup(index, keyword): 
     for entry in index:
         if entry[0] == keyword:
             return entry[1]
     
 
 
-def add_page_to_index(index, url, content):
+def add_page_to_index(index, url, content): # We add the content of the page to the the index. The words in this page serve as keywords
+                                            # for the associated url
     words = content.split()
     for word in words:
         add_to_index(index, word, url)
 
 
 def get_target_link(page):
-    startpos = page.find('<a href=')
+    startpos = page.find('<a href=') # Most hyperlinks begin with '<a href'
     if startpos == -1:
         return None, 0
     startquote = page.index('"', startpos)
@@ -35,7 +37,7 @@ def get_target_link(page):
     return page[startquote+1:endquote], endquote
 
 
-def get_all_links(page):
+def get_all_links(page): # Gets all the links on a given page
     links = []
     while True:
         url,endpos = get_target_link(page)
@@ -47,12 +49,12 @@ def get_all_links(page):
     return links
 
 
-def union(p, q):
+def union(p, q): # To append crawled pages in order to prevent recrawling of the same page
     for e in q:
         if e not in p:
             p.append(e)
 
-def crawl_web(seed):
+def crawl_web(seed): 
     tocrawl = [seed]
     index = []
     
